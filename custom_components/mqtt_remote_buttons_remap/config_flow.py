@@ -30,7 +30,11 @@ def _build_mapping_schema(hass, sources, existing_map: dict[str, str]) -> vol.Sc
     fields: dict[Any, Any] = {}
     for source in sources:
         choices = [("", "Unmapped")] + list_target_entities(hass, source.mode)
-        fields[vol.Optional(_source_field_key(source), default=existing_map.get(source.entity_id, ""))] = _select(choices)
+        valid_values = {value for value, _label in choices}
+        default_value = existing_map.get(source.entity_id, "")
+        if default_value not in valid_values:
+            default_value = ""
+        fields[vol.Optional(_source_field_key(source), default=default_value)] = _select(choices)
     return vol.Schema(fields)
 
 

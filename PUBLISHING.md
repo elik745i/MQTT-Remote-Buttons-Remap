@@ -17,13 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.2`
+- Title: `v0.1.3`
 - Notes summary:
-  - Initial HACS-ready release of `MQTT Remote Buttons Remap`
-  - Config-flow based setup for selecting an ESP32 MQTT remote
-  - Per-button mapping from discovered MQTT controls to Home Assistant entities
-  - Toggle action synchronization for compatible Home Assistant stateful entities
-  - Included HACS metadata and brand icon assets
+  - Fix stale entity mappings breaking the options flow
+  - Attach a diagnostic sensor so the integration associates with the MQTT device
+  - Add the missing brand logo asset for Home Assistant UI rendering
 
 Minimum expected root layout:
 

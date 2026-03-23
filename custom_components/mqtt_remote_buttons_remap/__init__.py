@@ -12,6 +12,7 @@ from .const import CONF_ACTION_MAP, CONF_HWID, CONF_TOPIC, DOMAIN, EVENT_BUTTON_
 
 _LOGGER = logging.getLogger(__name__)
 CONFIG_SCHEMA = cv.config_entry_only_config_schema(DOMAIN)
+PLATFORMS = ["sensor"]
 
 
 async def async_setup(hass: HomeAssistant, config: dict[str, Any]) -> bool:
@@ -59,13 +60,15 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
 
     unsubscribe = await mqtt.async_subscribe(hass, topic, _message_received, 0)
     unsubscribers[entry.entry_id] = unsubscribe
+    await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     _LOGGER.info("Subscribed '%s' to topic '%s'", entry.title, topic)
     return True
 
 
 async def async_unload_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
+    unload_ok = await hass.config_entries.async_unload_platforms(entry, PLATFORMS)
     unsubscribe = hass.data.get(DOMAIN, {}).pop(entry.entry_id, None)
     if unsubscribe is not None:
         unsubscribe()
-    return True
+    return unload_ok
 
