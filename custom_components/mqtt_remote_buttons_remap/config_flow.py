@@ -79,6 +79,7 @@ class MqttRemoteButtonsRemapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
     VERSION = 1
 
     def __init__(self) -> None:
+        super().__init__()
         self._selected_device_id: str | None = None
         self._selected_hwid: str | None = None
         self._selected_title: str | None = None
@@ -181,6 +182,7 @@ class MqttRemoteButtonsRemapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
 
 class MqttRemoteButtonsRemapOptionsFlow(config_entries.OptionsFlow):
     def __init__(self) -> None:
+        super().__init__()
         self._sources = []
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:

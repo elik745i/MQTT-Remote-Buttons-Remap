@@ -1,18 +1,18 @@
 ## Highlights
 
-- Fixed the Home Assistant options dialog opened from the gear icon after the mapping UI moved to pasted entity IDs.
-- Kept pasted Home Assistant entity IDs in the mapping UI, with validation now applied on submit instead of during form schema rendering.
-- Preserved the remote-to-HA chat and battery alert support added in the prior release.
+- Fixed Home Assistant flow initialization for the options and reconfigure dialogs.
+- Preserved pasted Home Assistant entity IDs in the mapping UI, with validation applied on submit.
+- Replaced the broken hotfix with a clean patch release that HACS can detect normally.
 
 ## Added
 
-- Per-field validation errors for invalid pasted entity IDs in the mapping form.
+- No new features in this patch.
 
 ## Changed
 
-- Integration version bumped to `0.1.6`.
-- Mapping form validation now runs after submit so Home Assistant can render the options dialog reliably.
+- Integration version bumped to `0.1.7`.
+- Flow handlers now call the Home Assistant base initializers before step handling.
 
 ## Fixed
 
-- The gear-icon configuration flow no longer crashes with a 500 error when Home Assistant loads the options form.
+- The gear-icon configuration flow and reconfigure dialog no longer fail before the first step is shown.

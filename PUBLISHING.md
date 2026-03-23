@@ -17,11 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.6`
+- Title: `v0.1.7`
 - Notes summary:
-  - Fix the Home Assistant gear-icon options dialog after the text-entry mapping change
-  - Keep pasted entity ID support with validation shown on submit instead of breaking form rendering
-  - Preserve the v0.1.5 chat and battery alert additions
+  - Fix Home Assistant flow initialization for both options and reconfigure dialogs
+  - Preserve pasted entity ID support with submit-time validation
+  - Replace the broken hotfix with a clean patch release HACS can actually detect
 
 Minimum expected root layout:
 
