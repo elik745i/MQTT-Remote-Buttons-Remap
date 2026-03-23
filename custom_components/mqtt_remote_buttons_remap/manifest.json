@@ -10,7 +10,7 @@
   ],
   "documentation": "https://github.com/elik745i/MQTT-Remote-Buttons-Remap#readme",
   "integration_type": "hub",
-  "issue_tracker": "https://github.com/elik745i/MQTT-Remote-Buttons-Remap/issues",
   "iot_class": "local_push",
+  "issue_tracker": "https://github.com/elik745i/MQTT-Remote-Buttons-Remap/issues",
   "version": "0.1.1"
 }
