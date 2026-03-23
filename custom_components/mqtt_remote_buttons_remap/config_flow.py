@@ -51,11 +51,21 @@ def _build_mapping_schema(hass, sources, existing_map: dict[str, str]) -> vol.Sc
     fields: dict[Any, Any] = {}
     for source in sources:
         default_value = existing_map.get(source.entity_id, "")
-        fields[vol.Optional(_source_field_key(source), default=default_value)] = vol.All(
-            str,
-            lambda value, source_mode=source.mode: _validate_mapping_value(value, source_mode),
-        )
+        fields[vol.Optional(_source_field_key(source), default=default_value)] = str
     return vol.Schema(fields)
+
+
+def _validate_source_map(sources, user_input: dict[str, Any]) -> tuple[dict[str, str], dict[str, str]]:
+    source_map: dict[str, str] = {}
+    errors: dict[str, str] = {}
+    for source in sources:
+        field_key = _source_field_key(source)
+        raw_value = user_input.get(field_key, "")
+        try:
+            source_map[source.entity_id] = _validate_mapping_value(raw_value, source.mode)
+        except vol.Invalid:
+            errors[field_key] = "invalid_entity"
+    return source_map, errors
 
 
 def _resolve_entry_from_context(hass, context):
@@ -145,7 +155,13 @@ class MqttRemoteButtonsRemapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
 
         existing_map = entry.data.get(CONF_SOURCE_MAP, {})
         if user_input is not None:
-            source_map = {source.entity_id: user_input.get(_source_field_key(source), "") for source in sources}
+            source_map, errors = _validate_source_map(sources, user_input)
+            if errors:
+                return self.async_show_form(
+                    step_id="reconfigure",
+                    data_schema=_build_mapping_schema(self.hass, sources, user_input),
+                    errors=errors,
+                )
             self.hass.config_entries.async_update_entry(
                 entry,
                 data={
@@ -178,7 +194,13 @@ class MqttRemoteButtonsRemapOptionsFlow(config_entries.OptionsFlow):
 
         existing_map = self.config_entry.data.get(CONF_SOURCE_MAP, {})
         if user_input is not None:
-            source_map = {source.entity_id: user_input.get(_source_field_key(source), "") for source in self._sources}
+            source_map, errors = _validate_source_map(self._sources, user_input)
+            if errors:
+                return self.async_show_form(
+                    step_id="map_buttons",
+                    data_schema=_build_mapping_schema(self.hass, self._sources, user_input),
+                    errors=errors,
+                )
             updated_data = {
                 **self.config_entry.data,
                 CONF_SOURCE_MAP: source_map,

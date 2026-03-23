@@ -14,6 +14,9 @@
         "description": "Update the button mappings for this MQTT remote. Paste a Home Assistant entity ID such as switch.gate02_light, or leave the field blank to keep that control unmapped. Press-type sources accept button-like targets: button, input_button, scene, or script. Toggle-type sources accept stateful targets: switch, light, fan, or input_boolean."
       }
     },
+    "error": {
+      "invalid_entity": "Enter a valid Home Assistant entity ID for this control type."
+    },
     "abort": {
       "no_remote_devices": "No supported ESP32 MQTT remote devices were found.",
       "already_configured": "This MQTT remote is already configured.",
@@ -28,6 +31,9 @@
         "title": "Update mappings",
         "description": "Assign Home Assistant targets for the discovered MQTT buttons and switches. Paste a Home Assistant entity ID such as switch.gate02_light, or leave the field blank to keep that control unmapped. Press-type sources accept button-like targets: button, input_button, scene, or script. Toggle-type sources accept stateful targets: switch, light, fan, or input_boolean."
       }
+    },
+    "error": {
+      "invalid_entity": "Enter a valid Home Assistant entity ID for this control type."
     },
     "abort": {
       "no_remote_buttons": "This MQTT remote has no discovered MQTT buttons or switches yet."

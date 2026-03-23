@@ -1,20 +1,18 @@
 ## Highlights
 
-- Added pasteable Home Assistant entity IDs in the mapping UI, with domain validation for press and toggle sources.
-- Added remote-to-HA chat handling through `mqtt_remote_buttons_remap_chat_message` and the `Last Chat Message` diagnostic sensor.
-- Added battery alert handling through `mqtt_remote_buttons_remap_battery_alert` and the `Last Battery Alert` diagnostic sensor.
+- Fixed the Home Assistant options dialog opened from the gear icon after the mapping UI moved to pasted entity IDs.
+- Kept pasted Home Assistant entity IDs in the mapping UI, with validation now applied on submit instead of during form schema rendering.
+- Preserved the remote-to-HA chat and battery alert support added in the prior release.
 
 ## Added
 
-- Battery alert events for low battery and fully charged transitions.
-- Diagnostic sensor that stores the latest emitted battery alert together with percent, voltage, and charging attributes.
-- Release workflow support for including a human-written summary in GitHub releases.
+- Per-field validation errors for invalid pasted entity IDs in the mapping form.
 
 ## Changed
 
-- Integration version bumped to `0.1.5`.
-- README updated to document MQTT battery entities, chat support, alert events, and automation usage.
+- Integration version bumped to `0.1.6`.
+- Mapping form validation now runs after submit so Home Assistant can render the options dialog reliably.
 
 ## Fixed
 
-- Mapping options no longer depend on dropdown-only selection for valid Home Assistant entity IDs.
+- The gear-icon configuration flow no longer crashes with a 500 error when Home Assistant loads the options form.

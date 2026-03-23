@@ -17,12 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.5`
+- Title: `v0.1.6`
 - Notes summary:
-  - Allow pasted Home Assistant entity IDs in button mapping options
-  - Add remote-to-HA chat event and diagnostic sensor for automations and TTS
-  - Add battery alert event and diagnostic sensor on top of firmware MQTT battery telemetry
-  - Keep release notes richer than the default Full Changelog link
+  - Fix the Home Assistant gear-icon options dialog after the text-entry mapping change
+  - Keep pasted entity ID support with validation shown on submit instead of breaking form rendering
+  - Preserve the v0.1.5 chat and battery alert additions
 
 Minimum expected root layout:
 
