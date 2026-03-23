@@ -1,18 +1,19 @@
 ## Highlights
 
-- Fixed Home Assistant flow initialization for the options and reconfigure dialogs.
-- Preserved pasted Home Assistant entity IDs in the mapping UI, with validation applied on submit.
-- Replaced the broken hotfix with a clean patch release that HACS can detect normally.
+- Added bidirectional state sync for mapped toggle controls.
+- Added a visible Home Assistant persistent notification for the latest incoming remote chat message.
+- Preserved the earlier options-flow and mapping fixes.
 
 ## Added
 
-- No new features in this patch.
+- MQTT state mirroring from Home Assistant back to mapped remote toggle controls.
+- Persistent notification creation for incoming remote-to-HA chat messages.
 
 ## Changed
 
-- Integration version bumped to `0.1.7`.
-- Flow handlers now call the Home Assistant base initializers before step handling.
+- Integration version bumped to `0.1.8`.
+- The integration now listens for state changes on mapped stateful target entities.
 
 ## Fixed
 
-- The gear-icon configuration flow and reconfigure dialog no longer fail before the first step is shown.
+- Mapped toggle controls now stay synchronized when they are switched from the Home Assistant side.

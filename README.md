@@ -2,7 +2,7 @@
 
 Custom Home Assistant integration for this firmware family.
 
-Revision: `0.1.7`
+Revision: `0.1.8`
 
 Main remote device repository with hardware details and build instructions:
 
@@ -109,10 +109,11 @@ What appears in Home Assistant:
 
 - MQTT discovery `text` entity `Send Chat Message`
 - MQTT discovery `text` entity `Received Chat Messages`
+- Integration-created persistent notification for the latest received chat message
 - Custom integration diagnostic sensor `Last Chat Message`
 - Custom integration event `mqtt_remote_buttons_remap_chat_message`
 
-This means Home Assistant can already display incoming messages in the built-in MQTT text entity, and the integration now gives you a dedicated event/sensor path for automations.
+This means Home Assistant can display incoming messages in the built-in MQTT text entity, surface the latest one as a visible persistent notification, and still expose a dedicated event/sensor path for automations.
 
 ## TTS Automations
 
@@ -180,6 +181,8 @@ This is meant for notifications and automations. The actual battery percent / vo
 
 - MQTT press payloads like `up` or `button_5` call the mapped target's press-style service.
 - MQTT toggle payloads like `lamp_on` and `lamp_off` call `turn_on` and `turn_off` on the mapped target.
+- When a mapped Home Assistant `switch`, `light`, `fan`, or `input_boolean` changes inside Home Assistant, the integration publishes `ON` or `OFF` back to the matching remote MQTT control topic.
+- Toggle actions originating from the remote are not echoed back to the device, which avoids MQTT feedback loops.
 - The integration also fires a Home Assistant event named `mqtt_remote_buttons_remap_button_action` for every received payload.
 
 ## Example Flow

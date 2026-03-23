@@ -70,6 +70,16 @@ def source_kind_label(mode: str) -> str:
     return "toggle" if mode == ACTION_MODE_STATE else "press"
 
 
+def control_index_from_unique_id(unique_id: str) -> int | None:
+    marker = "_mqtt_control_"
+    if marker not in unique_id:
+        return None
+    suffix = unique_id.rsplit(marker, 1)[1]
+    if not suffix.isdigit():
+        return None
+    return int(suffix)
+
+
 def extract_hwid(device: dr.DeviceEntry) -> str | None:
     for identifier in device.identifiers:
         if len(identifier) < 2:

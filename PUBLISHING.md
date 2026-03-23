@@ -17,11 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.7`
+- Title: `v0.1.8`
 - Notes summary:
-  - Fix Home Assistant flow initialization for both options and reconfigure dialogs
-  - Preserve pasted entity ID support with submit-time validation
-  - Replace the broken hotfix with a clean patch release HACS can actually detect
+  - Sync mapped stateful Home Assistant entities back to the remote over MQTT when they change in HA
+  - Show a persistent Home Assistant notification for the latest incoming remote chat message
+  - Preserve the earlier flow and mapping fixes
 
 Minimum expected root layout:
 
