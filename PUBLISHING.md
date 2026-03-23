@@ -17,7 +17,7 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.1`
+- Title: `v0.1.2`
 - Notes summary:
   - Initial HACS-ready release of `MQTT Remote Buttons Remap`
   - Config-flow based setup for selecting an ESP32 MQTT remote
