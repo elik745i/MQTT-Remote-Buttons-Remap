@@ -1,7 +1,7 @@
 {
   "domain": "mqtt_remote_buttons_remap",
   "name": "MQTT Remote Buttons Remap",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "documentation": "https://github.com/elik745i/MQTT-Remote-Buttons-Remap#readme",
   "issue_tracker": "https://github.com/elik745i/MQTT-Remote-Buttons-Remap/issues",
   "dependencies": [

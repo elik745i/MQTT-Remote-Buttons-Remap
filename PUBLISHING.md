@@ -14,9 +14,9 @@ Repository checklist:
 4. GitHub Actions now auto-publishes releases for future tags matching `v*`.
 5. For an already-pushed tag like `v0.1.0`, run the `Publish Release` workflow manually and pass the tag name.
 
-Suggested first release:
+Suggested current release:
 
-- Title: `v0.1.0`
+- Title: `v0.1.1`
 - Notes summary:
   - Initial HACS-ready release of `MQTT Remote Buttons Remap`
   - Config-flow based setup for selecting an ESP32 MQTT remote

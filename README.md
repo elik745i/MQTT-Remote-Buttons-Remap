@@ -2,7 +2,7 @@
 
 Custom Home Assistant integration for this firmware family.
 
-Revision: `0.1.0`
+Revision: `0.1.1`
 
 This integration adds a Home Assistant setup interface for ESP32 remotes that already advertise MQTT buttons and switches through Home Assistant MQTT discovery.
 
