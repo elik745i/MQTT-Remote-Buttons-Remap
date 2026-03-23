@@ -7,6 +7,7 @@ import voluptuous as vol
 from homeassistant import config_entries
 from homeassistant.const import CONF_DEVICE_ID
 from homeassistant.data_entry_flow import FlowResult
+from homeassistant.core import callback
 from homeassistant.helpers.selector import SelectOptionDict, SelectSelector, SelectSelectorConfig
 
 from .const import CONF_ACTION_MAP, CONF_HWID, CONF_SOURCE_MAP, CONF_TOPIC, DOMAIN
@@ -110,8 +111,9 @@ class MqttRemoteButtonsRemapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
         return self.async_show_form(step_id="user", data_schema=schema)
 
     @staticmethod
+    @callback
     def async_get_options_flow(config_entry):
-        return MqttRemoteButtonsRemapOptionsFlow(config_entry)
+        return MqttRemoteButtonsRemapOptionsFlow()
 
     async def async_step_reconfigure(self, user_input: dict[str, Any] | None = None) -> FlowResult:
         entry = _resolve_entry_from_context(self.hass, self.context)
@@ -143,8 +145,7 @@ class MqttRemoteButtonsRemapConfigFlow(config_entries.ConfigFlow, domain=DOMAIN)
 
 
 class MqttRemoteButtonsRemapOptionsFlow(config_entries.OptionsFlow):
-    def __init__(self, config_entry) -> None:
-        self.config_entry = config_entry
+    def __init__(self) -> None:
         self._sources = []
 
     async def async_step_init(self, user_input: dict[str, Any] | None = None) -> FlowResult:

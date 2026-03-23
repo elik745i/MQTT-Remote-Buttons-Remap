@@ -17,11 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.3`
+- Title: `v0.1.4`
 - Notes summary:
-  - Fix stale entity mappings breaking the options flow
-  - Attach a diagnostic sensor so the integration associates with the MQTT device
-  - Add the missing brand logo asset for Home Assistant UI rendering
+  - Switch the options flow to the current Home Assistant handler pattern
+  - Harden entity registry name lookups used while building mapping dropdowns
+  - Preserve the earlier device-linking and logo fixes
 
 Minimum expected root layout:
 

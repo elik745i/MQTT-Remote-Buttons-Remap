@@ -14,6 +14,14 @@ from .const import (
 )
 
 
+def _entity_display_name(entry: er.RegistryEntry) -> str:
+    return (
+        getattr(entry, "original_name", None)
+        or getattr(entry, "name", None)
+        or entry.entity_id
+    )
+
+
 @dataclass(slots=True)
 class RemoteSource:
     entity_id: str
@@ -101,7 +109,7 @@ def list_remote_sources(hass, device_id: str) -> list[RemoteSource]:
         if "_mqtt_control_" not in unique_id:
             continue
 
-        display_name = entry.original_name or entry.name or entry.entity_id
+        display_name = _entity_display_name(entry)
         base_action = slugify_remote_action(display_name, f"button_{fallback_index}")
         fallback_index += 1
         mode = ACTION_MODE_STATE if entry.domain == "switch" else ACTION_MODE_PRESS
@@ -129,7 +137,7 @@ def list_target_entities(hass, mode: str) -> list[tuple[str, str]]:
             continue
         if entry.domain not in domains:
             continue
-        label = entry.original_name or entry.name or entry.entity_id
+        label = _entity_display_name(entry)
         entities.append((entry.entity_id, f"{label} ({entry.entity_id})"))
     entities.sort(key=lambda item: item[1].lower())
     return entities

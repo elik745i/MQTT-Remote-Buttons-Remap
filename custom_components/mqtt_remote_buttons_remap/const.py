@@ -2,7 +2,7 @@ from __future__ import annotations
 
 DOMAIN = "mqtt_remote_buttons_remap"
 NAME = "MQTT Remote Buttons Remap"
-VERSION = "0.1.3"
+VERSION = "0.1.4"
 
 ACTION_MODE_PRESS = "press"
 ACTION_MODE_STATE = "state"
