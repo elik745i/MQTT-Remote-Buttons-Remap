@@ -17,11 +17,12 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.4`
+- Title: `v0.1.5`
 - Notes summary:
-  - Switch the options flow to the current Home Assistant handler pattern
-  - Harden entity registry name lookups used while building mapping dropdowns
-  - Preserve the earlier device-linking and logo fixes
+  - Allow pasted Home Assistant entity IDs in button mapping options
+  - Add remote-to-HA chat event and diagnostic sensor for automations and TTS
+  - Add battery alert event and diagnostic sensor on top of firmware MQTT battery telemetry
+  - Keep release notes richer than the default Full Changelog link
 
 Minimum expected root layout:
 

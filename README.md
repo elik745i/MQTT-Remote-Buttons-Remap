@@ -2,7 +2,13 @@
 
 Custom Home Assistant integration for this firmware family.
 
-Revision: `0.1.4`
+Revision: `0.1.5`
+
+Main remote device repository with hardware details and build instructions:
+
+- https://github.com/elik745i/ESP32-2432S024C-Remote
+
+![ESP32-2432S024C Remote](https://github.com/elik745i/ESP32-2432S024C-Remote/raw/main/3D_Models/render1.jpeg)
 
 This integration adds a Home Assistant setup interface for ESP32 remotes that already advertise MQTT buttons and switches through Home Assistant MQTT discovery.
 
@@ -12,7 +18,7 @@ The interface works like this:
 2. The integration entry is added immediately.
 3. Open that integration entry and configure mappings from its options screen.
 4. The integration reads that device's advertised MQTT buttons and toggle controls already registered in Home Assistant.
-5. Under each remote button, pick the Home Assistant target entity from a dropdown.
+5. Under each remote button, paste or enter the Home Assistant target entity.
 6. Leave any control as `Unmapped` if you do not want to use it.
 7. Press-type MQTT buttons trigger press-style Home Assistant entities.
 8. Toggle-type MQTT buttons mirror on and off state to a compatible Home Assistant entity.
@@ -90,6 +96,86 @@ Target dropdown behavior:
 
 This split is intentional. A Home Assistant `button` entity is stateless, so it cannot mirror an MQTT `ON/OFF` state. For actual on/off synchronization, the target must be a stateful entity such as a `switch`, `light`, or `input_boolean`.
 
+## Chat Integration
+
+The firmware already exposes Home Assistant chat over MQTT discovery, and the custom integration now also listens for incoming remote-to-HA chat messages.
+
+Firmware MQTT topics:
+
+- HA -> remote: `esp32/remote/<HWID>/chat/ha/set`
+- Remote -> HA: `esp32/remote/<HWID>/chat/ha/received`
+
+What appears in Home Assistant:
+
+- MQTT discovery `text` entity `Send Chat Message`
+- MQTT discovery `text` entity `Received Chat Messages`
+- Custom integration diagnostic sensor `Last Chat Message`
+- Custom integration event `mqtt_remote_buttons_remap_chat_message`
+
+This means Home Assistant can already display incoming messages in the built-in MQTT text entity, and the integration now gives you a dedicated event/sensor path for automations.
+
+## TTS Automations
+
+Recent Home Assistant versions do not have a built-in `auto speak every incoming MQTT text message` toggle, but this is straightforward with an automation.
+
+Recommended trigger options:
+
+- Trigger on event `mqtt_remote_buttons_remap_chat_message`
+- Or trigger on state change of the integration sensor `Last Chat Message`
+
+Typical action:
+
+- Call `tts.speak` with your chosen TTS provider and target `media_player`
+
+High-level example:
+
+```yaml
+alias: Remote chat TTS
+triggers:
+  - trigger: event
+    event_type: mqtt_remote_buttons_remap_chat_message
+actions:
+  - action: tts.speak
+    target:
+      entity_id: tts.google_translate_en_com
+    data:
+      media_player_entity_id: media_player.kitchen_speaker
+      message: "{{ trigger.event.data.message }}"
+```
+
+That gives you future-proof TTS handling without changing the device firmware again.
+
+## Battery Monitoring
+
+The firmware already exposes battery telemetry to Home Assistant over MQTT discovery through the shared state topic:
+
+- MQTT sensor `Battery`
+- MQTT sensor `Battery Voltage`
+- MQTT binary sensor `Charging`
+
+The custom integration now adds alert semantics on top of that state stream.
+
+What the integration adds:
+
+- Diagnostic sensor `Last Battery Alert`
+- Event `mqtt_remote_buttons_remap_battery_alert`
+
+Alert types emitted:
+
+- `low` when battery falls to 15% or below while not charging
+- `full` when battery reaches 99% or above
+
+Event data includes:
+
+- `alert_type`
+- `message`
+- `battery_percent`
+- `battery_voltage`
+- `battery_charging`
+- `received_at`
+
+This is meant for notifications and automations. The actual battery percent / voltage entities still come directly from the firmware MQTT discovery path.
+
 ## Synchronization Rules
 
 - MQTT press payloads like `up` or `button_5` call the mapped target's press-style service.
@@ -113,9 +199,11 @@ Behavior:
 
 ## Event Emitted
 
-The integration fires this Home Assistant event for every received action:
+The integration fires these Home Assistant events:
 
 - `mqtt_remote_buttons_remap_button_action`
+- `mqtt_remote_buttons_remap_chat_message`
+- `mqtt_remote_buttons_remap_battery_alert`
 
 Event data:
 

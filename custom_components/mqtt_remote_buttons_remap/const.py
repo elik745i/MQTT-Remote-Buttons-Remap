@@ -2,7 +2,7 @@ from __future__ import annotations
 
 DOMAIN = "mqtt_remote_buttons_remap"
 NAME = "MQTT Remote Buttons Remap"
-VERSION = "0.1.4"
+VERSION = "0.1.5"
 
 ACTION_MODE_PRESS = "press"
 ACTION_MODE_STATE = "state"
@@ -22,3 +22,13 @@ CONF_TOPIC = "topic"
 
 DEFAULT_QOS = 0
 EVENT_BUTTON_ACTION = "mqtt_remote_buttons_remap_button_action"
+EVENT_CHAT_MESSAGE = "mqtt_remote_buttons_remap_chat_message"
+EVENT_BATTERY_ALERT = "mqtt_remote_buttons_remap_battery_alert"
+
+BATTERY_LOW_PERCENT = 15
+BATTERY_FULL_PERCENT = 99
+BATTERY_FULL_RESET_PERCENT = 95
+
+
+def entry_runtime_signal(entry_id: str) -> str:
+    return f"{DOMAIN}_{entry_id}_updated"

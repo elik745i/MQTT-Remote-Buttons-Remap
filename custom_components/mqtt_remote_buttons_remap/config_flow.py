@@ -8,10 +8,11 @@ from homeassistant import config_entries
 from homeassistant.const import CONF_DEVICE_ID
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.core import callback
+from homeassistant.helpers import config_validation as cv
 from homeassistant.helpers.selector import SelectOptionDict, SelectSelector, SelectSelectorConfig
 
-from .const import CONF_ACTION_MAP, CONF_HWID, CONF_SOURCE_MAP, CONF_TOPIC, DOMAIN
-from .helpers import build_action_map, extract_hwid, list_remote_devices, list_remote_sources, list_target_entities, source_kind_label
+from .const import ACTION_MODE_PRESS, BUTTON_TARGET_DOMAINS, CONF_ACTION_MAP, CONF_HWID, CONF_SOURCE_MAP, CONF_TOPIC, DOMAIN, STATE_TARGET_DOMAINS
+from .helpers import build_action_map, extract_hwid, list_remote_devices, list_remote_sources, source_kind_label
 
 
 def _select(options: list[tuple[str, str]]) -> SelectSelector:
@@ -27,15 +28,33 @@ def _source_field_key(source) -> str:
     return f"{source.name} [{source_kind_label(source.mode)}]"
 
 
+def _target_domains_for_mode(mode: str) -> set[str]:
+    return BUTTON_TARGET_DOMAINS if mode == ACTION_MODE_PRESS else STATE_TARGET_DOMAINS
+
+
+def _validate_mapping_value(value: str, mode: str) -> str:
+    value = value.strip()
+    if not value:
+        return ""
+
+    entity_id = cv.entity_id(value)
+    allowed_domains = _target_domains_for_mode(mode)
+    entity_domain = entity_id.split(".", 1)[0]
+    if entity_domain not in allowed_domains:
+        allowed = ", ".join(sorted(allowed_domains))
+        raise vol.Invalid(f"Expected one of: {allowed}")
+
+    return entity_id
+
+
 def _build_mapping_schema(hass, sources, existing_map: dict[str, str]) -> vol.Schema:
     fields: dict[Any, Any] = {}
     for source in sources:
-        choices = [("", "Unmapped")] + list_target_entities(hass, source.mode)
-        valid_values = {value for value, _label in choices}
         default_value = existing_map.get(source.entity_id, "")
-        if default_value not in valid_values:
-            default_value = ""
-        fields[vol.Optional(_source_field_key(source), default=default_value)] = _select(choices)
+        fields[vol.Optional(_source_field_key(source), default=default_value)] = vol.All(
+            str,
+            lambda value, source_mode=source.mode: _validate_mapping_value(value, source_mode),
+        )
     return vol.Schema(fields)
 
 
