@@ -2,7 +2,7 @@
 
 Custom Home Assistant integration for this firmware family.
 
-Revision: `0.1.8`
+Revision: `0.1.9`
 
 Main remote device repository with hardware details and build instructions:
 

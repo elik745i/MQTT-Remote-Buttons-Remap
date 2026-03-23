@@ -1,19 +1,18 @@
 ## Highlights
 
-- Added bidirectional state sync for mapped toggle controls.
-- Added a visible Home Assistant persistent notification for the latest incoming remote chat message.
-- Preserved the earlier options-flow and mapping fixes.
+- Fixed the Home Assistant to remote state bridge for mapped toggle controls.
+- Switched to direct state tracking callbacks for mapped target entities.
+- Hardened MQTT publishing so the bridge works whether Home Assistant exposes the helper as sync or awaitable.
 
 ## Added
 
-- MQTT state mirroring from Home Assistant back to mapped remote toggle controls.
-- Persistent notification creation for incoming remote-to-HA chat messages.
+- No new features in this patch.
 
 ## Changed
 
-- Integration version bumped to `0.1.8`.
-- The integration now listens for state changes on mapped stateful target entities.
+- Integration version bumped to `0.1.9`.
+- Bidirectional state sync now uses direct state tracking instead of event-object callbacks.
 
 ## Fixed
 
-- Mapped toggle controls now stay synchronized when they are switched from the Home Assistant side.
+- MQTT control topics now receive HA-side toggle updates reliably.

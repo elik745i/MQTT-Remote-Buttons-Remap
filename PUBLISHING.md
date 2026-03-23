@@ -17,11 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.8`
+- Title: `v0.1.9`
 - Notes summary:
-  - Sync mapped stateful Home Assistant entities back to the remote over MQTT when they change in HA
-  - Show a persistent Home Assistant notification for the latest incoming remote chat message
-  - Preserve the earlier flow and mapping fixes
+  - Fix the Home Assistant to remote state bridge by using direct state tracking callbacks
+  - Await MQTT publish when Home Assistant exposes it as an awaitable helper
+  - Preserve the v0.1.8 chat notification and bidirectional sync feature set
 
 Minimum expected root layout:
 

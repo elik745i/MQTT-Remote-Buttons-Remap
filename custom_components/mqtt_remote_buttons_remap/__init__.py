@@ -2,12 +2,13 @@ from __future__ import annotations
 
 import json
 import logging
+from inspect import isawaitable
 from typing import Any
 
 from homeassistant.components import mqtt
 from homeassistant.const import STATE_OFF, STATE_ON
 from homeassistant.helpers import config_validation as cv
-from homeassistant.helpers.event import async_track_state_change_event
+from homeassistant.helpers.event import async_track_state_change
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_send
@@ -112,7 +113,9 @@ async def _async_publish_control_state(
     state: str,
 ) -> None:
     payload = "ON" if state == STATE_ON else "OFF"
-    mqtt.async_publish(hass, control_topic, payload, qos=0, retain=False)
+    publish_result = mqtt.async_publish(hass, control_topic, payload, qos=0, retain=False)
+    if isawaitable(publish_result):
+        await publish_result
     _LOGGER.debug(
         "Published state sync for '%s' target '%s' to '%s' payload '%s'",
         entry.title,
@@ -308,11 +311,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         hass.async_create_task(_async_process_state_message(hass, entry, message.topic, message.payload))
 
     @callback
-    def _target_state_changed(event) -> None:
-        entity_id = event.data.get("entity_id")
-        new_state = event.data.get("new_state")
-        old_state = event.data.get("old_state")
-
+    def _target_state_changed(entity_id, old_state, new_state) -> None:
         if not entity_id or new_state is None:
             return
         if new_state.state not in {STATE_ON, STATE_OFF}:
@@ -345,7 +344,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     ]
     if runtime["state_sync_targets"]:
         runtime["unsubscribers"].append(
-            async_track_state_change_event(hass, list(runtime["state_sync_targets"].keys()), _target_state_changed)
+            async_track_state_change(hass, list(runtime["state_sync_targets"].keys()), _target_state_changed)
         )
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
     _LOGGER.info("Subscribed '%s' to topics '%s', '%s', and '%s'", entry.title, topic, chat_topic, state_topic)
