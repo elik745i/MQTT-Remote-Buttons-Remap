@@ -17,11 +17,11 @@ Repository checklist:
 
 Suggested current release:
 
-- Title: `v0.1.9`
+- Title: `v0.1.10`
 - Notes summary:
-  - Fix the Home Assistant to remote state bridge by using direct state tracking callbacks
-  - Await MQTT publish when Home Assistant exposes it as an awaitable helper
-  - Preserve the v0.1.8 chat notification and bidirectional sync feature set
+  - Add the repository license file for clearer distribution metadata
+  - Bump the integration version to `0.1.10`
+  - Publish a fresh GitHub release so HACS and GitHub assets reflect the current repository contents
 
 Minimum expected root layout:
 

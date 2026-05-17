@@ -1,18 +1,18 @@
 ## Highlights
 
-- Fixed the Home Assistant to remote state bridge for mapped toggle controls.
-- Switched to direct state tracking callbacks for mapped target entities.
-- Hardened MQTT publishing so the bridge works whether Home Assistant exposes the helper as sync or awaitable.
+- Added the repository license file so the project has explicit distribution metadata.
+- Published a fresh patch release for the updated repository packaging.
+- Kept the existing integration behavior unchanged.
 
 ## Added
 
-- No new features in this patch.
+- MIT `LICENSE` file at the repository root.
 
 ## Changed
 
-- Integration version bumped to `0.1.9`.
-- Bidirectional state sync now uses direct state tracking instead of event-object callbacks.
+- Integration version bumped to `0.1.10`.
+- Release metadata now reflects the licensed repository state.
 
 ## Fixed
 
-- MQTT control topics now receive HA-side toggle updates reliably.
+- No runtime fixes in this patch.
